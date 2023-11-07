@@ -1,37 +1,61 @@
-//Create a web server that can read from files in the server
-// and serve them to the client
+//Create a web server that can respond to requests for /hello and /goodbye
+//with the appropriate text.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
+//Use the fs module to create a server that reads and serves up the index.html
+//file from the previous exercise.
 
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+var http = require('http');
+var fs = require('fs');
 
-// create a server object
-const server = http.createServer(function (req, res) {
-    //console.log('Request was made: ' + req.url);
-    if (req.url === '/' || req.url === '/home') {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        fs.createReadStream(path.join(__dirname, 'index.html')).pipe(res);
-    } else if (req.url === '/contact') {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        fs.createReadStream(path.join(__dirname, 'contact.html')).pipe(res);
-    } else if (req.url === '/api/comments') {
-        let comments = [
-            { name: 'John', comment: 'Hello World' },
-            { name: 'Jane', comment: 'Hi, there!' },
-            { name: 'Bob', comment: 'Aloha!' }
-        ];
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(comments));
-    } else {
-        res.writeHead(404, { 'Content-Type': 'text/html' });
-        fs.createReadStream(path.join(__dirname, '404.html')).pipe(res);
-    }
+var server = http.createServer(function(request, response) {
+  if (request.url === '/hello') {
+    response.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    response.write('hello world');
+    response.end();
+  } else if (request.url === '/goodbye') {
+    response.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    response.write('goodbye world');
+    response.end();
+  } else if (request.url === '/index.html') {
+    fs.readFile('index.html', function(err, data) {
+      if (err) {
+        response.writeHead(404);
+        response.write('Not Found!');
+      } else {
+        response.writeHead(200, {
+          'Content-Type': 'text/html'
+        });
+        response.write(data.toString());
+      }
+      response.end();
+    });
+  } else {
+    response.writeHead(404);
+    response.write('Not Found!');
+    response.end();
+  }
 });
 
-// listen for any incoming requests
-server.listen(3000, '   ;	', () => {
-    console.log('Server is running on port 3000');
-});
+server.listen(3000);
 
 
 
